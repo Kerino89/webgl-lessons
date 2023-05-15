@@ -1,3 +1,4 @@
+import glsl from "vite-plugin-glsl";
 import { resolve, parse } from "node:path";
 import { glob } from "glob";
 import { defineConfig } from "vite";
@@ -46,4 +47,5 @@ export default defineConfig({
       input: await generateInput(),
     },
   },
+  plugins: [glsl()],
 });
