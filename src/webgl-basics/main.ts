@@ -11,9 +11,14 @@ function main(): void {
 
   if (!gl) return void console.error("У вас не работает webgl!");
 
-  if (!initShaders(gl, vshader, fshader)) {
+  const program = initShaders(gl, vshader, fshader);
+
+  if (!program) {
     return void console.error("Не удалось проинициализировать шейдеры");
   }
+
+  const aPosition = gl.getAttribLocation(program, "a_Position"); // Получаем ссылку из созданной программы.
+  gl.vertexAttrib3f(aPosition, 0.0, 0.0, 0.0); // Устанавливаем координаты в переменой атрибуте.
 
   gl.clearColor(0, 0, 0, 1);
   gl.clear(gl.COLOR_BUFFER_BIT);
