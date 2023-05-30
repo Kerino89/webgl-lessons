@@ -20,12 +20,40 @@ function main(): void {
   const aPosition = gl.getAttribLocation(program, "a_Position"); // Получаем ссылку для установления позиции из созданной программы.
   const aPointSize = gl.getAttribLocation(program, "a_PointSize"); // Получаем ссылку для установления размера из созданной программы.
 
-  gl.vertexAttrib3f(aPosition, 0.5, 0.0, 0.0); // Устанавливаем координаты в переменой атрибуте.
   gl.vertexAttrib1f(aPointSize, 10.0); // Устанавливаем координаты в переменой атрибуте.
 
   gl.clearColor(0, 0, 0, 1);
   gl.clear(gl.COLOR_BUFFER_BIT);
-  gl.drawArrays(gl.POINTS, 0, 3);
+
+  canvas?.addEventListener("mousedown", (event) =>
+    handlerClick(event, gl, aPosition)
+  );
+
+  const gPoints: Array<[number, number]> = [];
+
+  function handlerClick(
+    { clientX, clientY, target }: MouseEvent,
+    gl: WebGLRenderingContext,
+    aPosition: number
+  ): void {
+    if (!target) return void 0;
+
+    const { left, top } = (target as HTMLCanvasElement).getBoundingClientRect();
+
+    const x = (clientX - left - gl.canvas.width / 2) / (gl.canvas.width / 2);
+    const y = (gl.canvas.height / 2 - (clientY - top)) / (gl.canvas.height / 2);
+
+    gPoints.push([x, y]);
+
+    gl.clearColor(0, 0, 0, 1);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+
+    for (const [x, y] of gPoints) {
+      gl.vertexAttrib3f(aPosition, x, y, 0.0); // Устанавливаем координаты в переменой атрибуте.
+
+      gl.drawArrays(gl.POINTS, 0, 3);
+    }
+  }
 }
 
 document.addEventListener("DOMContentLoaded", main, { once: true });
