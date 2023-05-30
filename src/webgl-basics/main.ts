@@ -17,8 +17,11 @@ function main(): void {
     return void console.error("Не удалось проинициализировать шейдеры");
   }
 
-  const aPosition = gl.getAttribLocation(program, "a_Position"); // Получаем ссылку из созданной программы.
-  gl.vertexAttrib3f(aPosition, 0.0, 0.0, 0.0); // Устанавливаем координаты в переменой атрибуте.
+  const aPosition = gl.getAttribLocation(program, "a_Position"); // Получаем ссылку для установления позиции из созданной программы.
+  const aPointSize = gl.getAttribLocation(program, "a_PointSize"); // Получаем ссылку для установления размера из созданной программы.
+
+  gl.vertexAttrib3f(aPosition, 0.5, 0.0, 0.0); // Устанавливаем координаты в переменой атрибуте.
+  gl.vertexAttrib1f(aPointSize, 10.0); // Устанавливаем координаты в переменой атрибуте.
 
   gl.clearColor(0, 0, 0, 1);
   gl.clear(gl.COLOR_BUFFER_BIT);
